@@ -1,0 +1,18 @@
+---
+manifest_version: "1"
+name: crypto-portfolio-manager
+description: ~
+roles:
+  - name: crypto_portfolio
+    provisioning:
+      strategy: create
+      deferred: false
+    dna:
+      bundled: "../dnas/crypto_portfolio/workdir/crypto_portfolio.dna"
+      modifiers:
+        network_seed: ~
+        properties: ~
+        origin_time: ~
+        quantum_time: ~
+      installed_hash: ~
+      clone_limit: 0

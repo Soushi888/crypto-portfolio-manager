@@ -1,0 +1,15 @@
+[package]
+name = "portfolio"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "portfolio"
+
+[dependencies]
+hdk = { workspace = true }
+
+serde = { workspace = true }
+
+portfolio_integrity = { workspace = true } 

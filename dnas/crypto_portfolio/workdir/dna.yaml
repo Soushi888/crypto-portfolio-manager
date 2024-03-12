@@ -1,0 +1,21 @@
+---
+manifest_version: "1"
+name: crypto_portfolio
+integrity:
+  network_seed: ~
+  properties: ~
+  origin_time: 1710057384390649
+  zomes:
+    - name: portfolio_integrity
+      hash: ~
+      bundled: "../../../target/wasm32-unknown-unknown/release/portfolio_integrity.wasm"
+      dependencies: ~
+      dylib: ~
+coordinator:
+  zomes:
+    - name: portfolio
+      hash: ~
+      bundled: "../../../target/wasm32-unknown-unknown/release/portfolio.wasm"
+      dependencies:
+        - name: portfolio_integrity
+      dylib: ~
