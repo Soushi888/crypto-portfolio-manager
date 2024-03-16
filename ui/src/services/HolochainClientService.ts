@@ -2,13 +2,17 @@ import { AppAgentWebsocket, type AppAgentClient, type AppInfoResponse } from '@h
 import { writable, type Writable } from 'svelte/store';
 
 /**
+ * A store that indicates whether the client is connected to the Holochain network.
+ */
+export const isConnected: Writable<boolean> = writable(false);
+
+/**
  * A service class for managing the Holochain client.
  */
 class HolochainClientService {
   static instance: HolochainClientService;
   roleName: string = 'crypto_portfolio';
   client: AppAgentClient | null = null;
-  loading = true;
   /**
    * Constructor for the HolochainClientService.
    * Ensures only one instance of the service is created.
@@ -25,7 +29,7 @@ class HolochainClientService {
    */
   async connectClient() {
     this.client = await AppAgentWebsocket.connect(new URL('https://UNUSED'), 'requests_and_offers');
-    this.loading = false;
+    isConnected.set(true);
   }
 
   /**
@@ -72,14 +76,6 @@ class HolochainClientService {
       payload: payload
     });
     return record;
-  }
-
-  /**
-   * Checks if the client is currently loading.
-   * @returns {boolean} - True if loading, false otherwise.
-   */
-  isLoading(): boolean {
-    return this.loading;
   }
 }
 

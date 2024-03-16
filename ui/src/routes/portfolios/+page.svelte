@@ -1,12 +1,11 @@
 <script lang="ts">
   import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
-  import type { PageData } from './$types';
   import DeletePortfolioPopup from '@lib/popups/DeletePortfolioPopup.svelte';
   import CreatePortfolioPopup from '@lib/popups/CreatePortfolioPopup.svelte';
   import RenamePortfolioPopup from '@lib/popups/RenamePortfolioPopup.svelte';
   import { breadcrumbStore } from '@stores/breadcrumb.store';
 
-  export let data: PageData;
+  let data: any;
 
   breadcrumbStore.set([
     ['Home', '/'],
@@ -36,20 +35,20 @@
   }
 </script>
 
-<CreatePortfolioPopup stakeholders={data.stakeholders} />
+<!-- <CreatePortfolioPopup stakeholders={data.stakeholders} /> -->
 
 <main class=" flex flex-col gap-4">
   <h2 class="h2 text-center">Portfolios</h2>
 
-  {#if data.portfolios.length === 0}
-    <div class="flex flex-col items-center gap-4">
-      <p>No portfolio found</p>
-      <button class="btn self-center bg-primary-700" use:popup={popupCreatePortfolio}>
-        Create a new portfolio
-      </button>
-    </div>
-  {:else}
-    <button class="btn w-1/2 self-center bg-primary-700" use:popup={popupCreatePortfolio}>
+  <!-- {#if data.portfolios.length === 0} -->
+  <div class="flex flex-col items-center gap-4">
+    <p>No portfolio found</p>
+    <button class="btn bg-primary-700 self-center" use:popup={popupCreatePortfolio}>
+      Create a new portfolio
+    </button>
+  </div>
+  <!-- {:else}
+    <button class="btn bg-primary-700 w-1/2 self-center" use:popup={popupCreatePortfolio}>
       Create a new portfolio
     </button>
 
@@ -85,5 +84,5 @@
         {/each}
       </tbody>
     </table>
-  {/if}
+  {/if} -->
 </main>

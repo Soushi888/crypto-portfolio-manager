@@ -7,8 +7,7 @@
   import { initializeStores } from '@skeletonlabs/skeleton';
   import { onMount, setContext } from 'svelte';
   import type { AppAgentClient } from '@holochain/client';
-  import hc from '@services/HolochainClientService';
-  import { storeAllStakeholderProfiles } from '@stores/stakeholder-profiles.store';
+  import hc, { isConnected } from '@services/HolochainClientService';
 
   storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
   initializeStores();
@@ -20,7 +19,6 @@
   onMount(async () => {
     await hc.connectClient();
     const record = await hc.callZome('ping', 'ping', null);
-    await storeAllStakeholderProfiles();
 
     console.log('Ping response:', record);
     console.log('appInfo :', await hc.getAppInfo());
@@ -31,7 +29,6 @@
   });
 </script>
 
-<!-- App Shell -->
 <AppShell>
   <svelte:fragment slot="header">
     <NavBar />
@@ -42,7 +39,7 @@
     </div> -->
   </svelte:fragment>
   <div class="container mx-auto flex h-full items-center justify-center pt-4">
-    {#if !hc.isLoading}
+    {#if !$isConnected}
       <div class="flex items-center justify-center">
         <p>Loading...</p>
       </div>

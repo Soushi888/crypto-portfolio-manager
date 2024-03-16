@@ -12,6 +12,7 @@
 
   onMount(async () => {
     await storeAllStakeholderProfiles();
+    console.log('allStakeholderProfiles :', $allStakeholderProfiles);
   });
 
   breadcrumbStore.set([
