@@ -4,7 +4,7 @@
 
 ## Developing
 
-Once you've installed dependencies with `bun install` (or `npm`, `pnpm` or `yarn`), you can start a development server:
+Once you've installed dependencies with `bun install` (or `npm`, `pnpm`, `yarn` or `bun`), you can start a development server:
 
 ```bash
 bun start

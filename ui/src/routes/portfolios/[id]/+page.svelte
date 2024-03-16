@@ -12,7 +12,7 @@
   import { breadcrumbStore } from '@stores/breadcrumb.store';
   import DeleteCoinPopup from '@lib/popups/DeleteCoinPopup.svelte';
   import { onMount } from 'svelte';
-  import CoinGeckoApiService from '@services/api-services/CoinGeckoApiService';
+  import CoinGeckoApiService from '@services/api-services/AlternativeApiService';
   import { get } from 'svelte/store';
 
   export let data: PageData;
@@ -47,8 +47,8 @@
   ]);
 
   onMount(async () => {
-    const apiService = new CoinGeckoApiService(fetch);
-    await apiService.getCoinsList();
+    // const apiService = new CoinGeckoApiService(fetch);
+    // await apiService.getCoinsList();
   });
 </script>
 
@@ -58,18 +58,18 @@
   <h2 class="h2">Portfolio {data.name}</h2>
   <div class="flex gap-4">
     <button
-      class="btn w-1/2 self-center bg-primary-700"
+      class="btn bg-primary-700 w-1/2 self-center"
       on:click={() => modalStore.trigger(modal(data.coinsList))}
     >
       Add a coin
     </button>
-    <button class="btn w-1/2 self-center bg-secondary-700">Manage stakeholders</button>
+    <button class="btn bg-secondary-700 w-1/2 self-center">Manage stakeholders</button>
   </div>
   <p>Total value: {data.current_value}$</p>
   <p>Stakeholders: {data.stakeholders?.join(', ')}</p>
   <h3 class="h3">Coins</h3>
   {#if data.coinsList.length > 0}
-    <table class="table table-hover">
+    <table class="table-hover table">
       <thead>
         <tr>
           <th>Name</th>

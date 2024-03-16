@@ -11,6 +11,11 @@ integrity:
       bundled: "../../../target/wasm32-unknown-unknown/release/portfolio_integrity.wasm"
       dependencies: ~
       dylib: ~
+    - name: coins_integrity
+      hash: ~
+      bundled: "../../../target/wasm32-unknown-unknown/release/coins_integrity.wasm"
+      dependencies: ~
+      dylib: ~
 coordinator:
   zomes:
     - name: portfolio
@@ -18,4 +23,15 @@ coordinator:
       bundled: "../../../target/wasm32-unknown-unknown/release/portfolio.wasm"
       dependencies:
         - name: portfolio_integrity
+      dylib: ~
+    - name: coins
+      hash: ~
+      bundled: "../../../target/wasm32-unknown-unknown/release/coins.wasm"
+      dependencies:
+        - name: coins_integrity
+      dylib: ~
+    - name: ping
+      hash: ~
+      bundled: "../../../target/wasm32-unknown-unknown/release/ping.wasm"
+      dependencies: []
       dylib: ~

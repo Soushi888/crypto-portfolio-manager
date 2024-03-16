@@ -11,6 +11,16 @@ members = ["dnas/*/zomes/coordinator/*", "dnas/*/zomes/integrity/*"]
 hdi = "=0.3.6"
 hdk = "=0.2.6"
 serde = "=1.0.166"
+serde_json = "1.0"
+
+[workspace.dependencies.coins]
+path = "dnas/crypto_portfolio/zomes/coordinator/coins"
+
+[workspace.dependencies.coins_integrity]
+path = "dnas/crypto_portfolio/zomes/integrity/coins"
+
+[workspace.dependencies.ping]
+path = "dnas/crypto_portfolio/zomes/coordinator/ping"
 
 [workspace.dependencies.portfolio]
 path = "dnas/crypto_portfolio/zomes/coordinator/portfolio"
