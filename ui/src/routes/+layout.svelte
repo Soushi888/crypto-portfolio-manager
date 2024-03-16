@@ -1,14 +1,14 @@
 <script lang="ts">
   import '../app.postcss';
-  import { AppShell, AppBar } from '@skeletonlabs/skeleton';
+  import { AppShell } from '@skeletonlabs/skeleton';
   import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
   import { storePopup } from '@skeletonlabs/skeleton';
   import NavBar from '$lib/NavBar.svelte';
   import { initializeStores } from '@skeletonlabs/skeleton';
   import { onMount, setContext } from 'svelte';
-  import type { ActionHash, AppAgentClient } from '@holochain/client';
-  import { AppAgentWebsocket } from '@holochain/client';
+  import type { AppAgentClient } from '@holochain/client';
   import hc from '@services/HolochainClientService';
+  import { storeAllStakeholderProfiles } from '@stores/stakeholder-profiles.store';
 
   storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
   initializeStores();
@@ -20,6 +20,7 @@
   onMount(async () => {
     await hc.connectClient();
     const record = await hc.callZome('ping', 'ping', null);
+    await storeAllStakeholderProfiles();
 
     console.log('Ping response:', record);
     console.log('appInfo :', await hc.getAppInfo());

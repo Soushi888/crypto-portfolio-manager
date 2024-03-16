@@ -6,6 +6,7 @@ import { writable, type Writable } from 'svelte/store';
  */
 class HolochainClientService {
   static instance: HolochainClientService;
+  roleName: string = 'crypto_portfolio';
   client: AppAgentClient | null = null;
   loading = true;
   /**
@@ -58,7 +59,7 @@ class HolochainClientService {
     zomeName: string,
     fnName: string,
     payload: unknown,
-    roleName: string = 'crypto_portfolio'
+    roleName: string = this.roleName
   ): Promise<any> {
     if (!this.client) {
       throw new Error('Client not connected');

@@ -5,7 +5,7 @@ use crate::error;
 
 #[hdk_extern]
 pub fn create_stakeholder_profile(stakeholder: StakeholderProfile) -> ExternResult<Record> {
-    let stakeholder_hash = create_entry(&EntryTypes::Stakeholder(stakeholder.clone()))?;
+    let stakeholder_hash = create_entry(&EntryTypes::StakeholderProfile(stakeholder.clone()))?;
     let record = get(stakeholder_hash.clone(), GetOptions::default())?
         .ok_or(error("Could not find the newly created Stakeholder"))?;
     let path = Path::from("all_stakeholder_profiles");

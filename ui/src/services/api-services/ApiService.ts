@@ -53,7 +53,7 @@ export default class ApiService {
       console.log(`Cached data found for ${url}`);
 
       if (now - timestamp < timeLimit || useCachedData) {
-        console.log(`Using cached data for "prepare prepare ${cacheKey}"`);
+        console.log(`Using cached data for "${cacheKey}"`);
         console.log(`Seconds before expiration: ${(timeLimit - (now - timestamp)) / 1000}`);
 
         console.groupEnd();

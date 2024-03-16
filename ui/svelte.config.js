@@ -19,7 +19,7 @@ const config = {
     alias: {
       '@types': './$types',
       '@lib': './src/lib',
-      '@components': './src/lib/components',
+      '@utils': './src/utils',
       '@stores': './src/stores',
       '@services': './src/services',
       '@models': './src/models'

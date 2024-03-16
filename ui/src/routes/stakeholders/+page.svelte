@@ -4,8 +4,15 @@
   import RenameStakeholderPopup from '@lib/popups/RenameStakeholderPopup.svelte';
   import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
   import { breadcrumbStore } from '@stores/breadcrumb.store.js';
+  import {
+    allStakeholderProfiles,
+    storeAllStakeholderProfiles
+  } from '@stores/stakeholder-profiles.store';
+  import { onMount } from 'svelte';
 
-  export let data;
+  onMount(async () => {
+    await storeAllStakeholderProfiles();
+  });
 
   breadcrumbStore.set([
     ['Home', '/'],
@@ -40,7 +47,7 @@
 <main class="flex flex-col gap-4">
   <h2 class="h2">Stakeholders</h2>
 
-  {#if data.stakeholders.length === 0}
+  {#if $allStakeholderProfiles.length === 0}
     <p class="text-center">No stakeholder found</p>
     <button class="btn bg-primary-700 self-center" use:popup={popupCreateStakeholder}>
       Create a new stakeholder
@@ -57,10 +64,10 @@
         </tr>
       </thead>
       <tbody>
-        {#each data.stakeholders as stakeholder, i}
+        {#each $allStakeholderProfiles as stakeholder, i}
           <tr>
             <td class="text-center hover:underline">
-              <a href="/stakeholders/{stakeholder.id}">
+              <a href="/stakeholders/{stakeholder.name}">
                 {stakeholder.name}
               </a>
             </td>
@@ -71,8 +78,6 @@
               <button title="Delete" use:popup={popupDeleteStakeholder(i)}>
                 <img src="/trash-icon.png" width="24" alt="Delete stakeholder icon" />
               </button>
-              <RenameStakeholderPopup id={stakeholder.id} name={stakeholder.name} {i} />
-              <DeleteStakeholderPopup id={stakeholder.id} {i} />
             </td>
           </tr>
         {/each}

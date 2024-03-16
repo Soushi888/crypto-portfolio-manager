@@ -6,7 +6,7 @@ pub use stakeholder_profile::*;
 #[hdk_entry_defs]
 #[unit_enum(UnitEntryTypes)]
 pub enum EntryTypes {
-    Stakeholder(StakeholderProfile),
+    StakeholderProfile(StakeholderProfile),
 }
 #[derive(Serialize, Deserialize)]
 #[hdk_link_types]
@@ -30,7 +30,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
     match op.flattened::<EntryTypes, LinkTypes>()? {
         FlatOp::StoreEntry(store_entry) => match store_entry {
             OpEntry::CreateEntry { app_entry, action } => match app_entry {
-                EntryTypes::Stakeholder(stakeholder) => validate_create_stakeholder_profile(
+                EntryTypes::StakeholderProfile(stakeholder) => validate_create_stakeholder_profile(
                     EntryCreationAction::Create(action),
                     stakeholder,
                 ),
@@ -38,7 +38,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
             OpEntry::UpdateEntry {
                 app_entry, action, ..
             } => match app_entry {
-                EntryTypes::Stakeholder(stakeholder) => validate_create_stakeholder_profile(
+                EntryTypes::StakeholderProfile(stakeholder) => validate_create_stakeholder_profile(
                     EntryCreationAction::Update(action),
                     stakeholder,
                 ),
@@ -53,8 +53,8 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 action,
             } => match (app_entry, original_app_entry) {
                 (
-                    EntryTypes::Stakeholder(stakeholder),
-                    EntryTypes::Stakeholder(original_stakeholder_profile),
+                    EntryTypes::StakeholderProfile(stakeholder),
+                    EntryTypes::StakeholderProfile(original_stakeholder_profile),
                 ) => validate_update_stakeholder_profile(
                     action,
                     stakeholder,
@@ -73,7 +73,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 original_app_entry,
                 action,
             } => match original_app_entry {
-                EntryTypes::Stakeholder(stakeholder) => {
+                EntryTypes::StakeholderProfile(stakeholder) => {
                     validate_delete_stakeholder_profile(action, original_action, stakeholder)
                 }
             },
@@ -141,7 +141,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
         },
         FlatOp::StoreRecord(store_record) => match store_record {
             OpRecord::CreateEntry { app_entry, action } => match app_entry {
-                EntryTypes::Stakeholder(stakeholder) => validate_create_stakeholder_profile(
+                EntryTypes::StakeholderProfile(stakeholder) => validate_create_stakeholder_profile(
                     EntryCreationAction::Create(action),
                     stakeholder,
                 ),
@@ -165,7 +165,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                     }
                 };
                 match app_entry {
-                    EntryTypes::Stakeholder(stakeholder) => {
+                    EntryTypes::StakeholderProfile(stakeholder) => {
                         let result = validate_create_stakeholder_profile(
                             EntryCreationAction::Update(action.clone()),
                             stakeholder.clone(),
@@ -253,7 +253,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                     }
                 };
                 match original_app_entry {
-                    EntryTypes::Stakeholder(original_stakeholder_profile) => {
+                    EntryTypes::StakeholderProfile(original_stakeholder_profile) => {
                         validate_delete_stakeholder_profile(
                             action,
                             original_action,
