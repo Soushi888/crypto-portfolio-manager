@@ -33,15 +33,15 @@ export default class ApiService {
    *
    * @param {string} url - The URL to fetch data from.
    * @param {string} cacheKey - The key used to store and retrieve the cached data.
-   * @param {string[]} [exeptionKeys=[]] - An array of cache keys that should bypass the cache and always fetch fresh data.
-   * @param {number} [timeLimit=60000] - The time limit in milliseconds for which the cached data is considered valid.
+   * @param {boolean} [useCachedData=false] - Flag indicating whether to use the cached data if available and still valid, bypassing a fresh fetch. Defaults to false.
+   * @param {number} [timeLimit=60000] - The time limit in milliseconds for which the cached data is considered valid. Defaults to 60 seconds.
    * @returns {Promise<any>} A promise that resolves with the fetched data.
    * @throws {Error} If the API call rate limit is exceeded or if the fetch request fails.
    */
   async fetchWithCache(
     url: string,
     cacheKey: string,
-    isExpeption: boolean = false,
+    useCachedData: boolean = false,
     timeLimit: number = 60 * 1000
   ): Promise<any> {
     const now = Date.now();
@@ -52,8 +52,8 @@ export default class ApiService {
       const { data, timestamp } = JSON.parse(cachedData);
       console.log(`Cached data found for ${url}`);
 
-      if (now - timestamp < timeLimit || isExpeption) {
-        console.log(`Using cached data for "${cacheKey}"`);
+      if (now - timestamp < timeLimit || useCachedData) {
+        console.log(`Using cached data for "prepare prepare ${cacheKey}"`);
         console.log(`Seconds before expiration: ${(timeLimit - (now - timestamp)) / 1000}`);
 
         console.groupEnd();
