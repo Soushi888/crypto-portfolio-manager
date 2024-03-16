@@ -1,17 +1,13 @@
 import { coinsMarketsListLocalStorageStore } from '@stores/coins.store';
 import ApiService from './ApiService';
+import { get } from 'svelte/store';
 
-/**
- * AltrenativeApiService class extends ApiService to provide specific functionality
- * for fetching cryptocurrency market data from the Alternative API.
- * This class utilizes caching to reduce the number of API calls.
- */
-export default class AltrenativeApiService extends ApiService {
+export default class CoinGeckoApiService extends ApiService {
   /**
    * Base URL for the Alternative API.
    * @type {string}
    */
-  private readonly baseUrl: string = 'https://api.alternative.me/v2';
+  private readonly baseUrl: string = 'https://api.coingecko.com/api/v3';
 
   /**
    * Constructor for the AltrenativeApiService class.
@@ -32,12 +28,12 @@ export default class AltrenativeApiService extends ApiService {
   async getCoinsMarketData(): Promise<void> {
     try {
       const data = await this.fetchWithCache(
-        `${this.baseUrl}/ticker/?limit=100`,
+        `${this.baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1`,
         'coinsMarketData',
-        [],
+        false,
         5 * 60 * 1000
       );
-      coinsMarketsListLocalStorageStore.set(Object.values(data.data));
+      coinsMarketsListLocalStorageStore.set(data);
     } catch (e) {}
   }
 }

@@ -26,16 +26,12 @@
     <tbody>
       {#each data.coinsList as coin}
         <tr>
-          <td>{coin.rank}</td>
+          <td>{coin.market_cap_rank}</td>
           <td>
             <div class="flex items-center gap-2">
-              <img
-                src={`https://alternative.me/images/coin_icons/${coin.website_slug}.jpg`}
-                alt={coin.name}
-                width="24"
-              />
+              <img src={coin.image} alt={coin.name} width="24" />
               <a
-                href="https://www.coingecko.com/en/coins/{coin.website_slug}"
+                href="https://www.coingecko.com/en/coins/{coin.id}"
                 class="hover:underline"
                 target="_blank"
               >
@@ -44,7 +40,7 @@
             </div>
           </td>
           <td>{coin.symbol}</td>
-          <td>{coin.quotes.USD.price.toFixed(2)}$</td>
+          <td>{coin.current_price}$</td>
         </tr>
       {/each}
     </tbody>

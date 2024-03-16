@@ -41,7 +41,7 @@ export default class ApiService {
   async fetchWithCache(
     url: string,
     cacheKey: string,
-    exeptionKeys: string[] = [],
+    isExpeption: boolean = false,
     timeLimit: number = 60 * 1000
   ): Promise<any> {
     const now = Date.now();
@@ -50,10 +50,11 @@ export default class ApiService {
     if (cachedData) {
       const { data, timestamp } = JSON.parse(cachedData);
       console.log(`Cached data found for ${url}`);
-      console.log(JSON.parse(cachedData));
 
-      if (now - timestamp < timeLimit || exeptionKeys.includes(cacheKey)) {
+      if (now - timestamp < timeLimit || isExpeption) {
         console.log(`Using cached data for ${url}`);
+        console.log(`Seconds before expiration: ${(timeLimit - (now - timestamp)) / 1000}`);
+
         return data;
       }
     }
