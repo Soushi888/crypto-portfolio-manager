@@ -17,8 +17,6 @@
 
   let client: AppAgentClient | undefined;
 
-  let loading = true;
-
   onMount(async () => {
     await hc.connectClient();
     const record = await hc.callZome('ping', 'ping', null);

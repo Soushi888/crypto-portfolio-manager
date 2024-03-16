@@ -42,11 +42,11 @@
 
   {#if data.stakeholders.length === 0}
     <p class="text-center">No stakeholder found</p>
-    <button class="btn self-center bg-primary-700" use:popup={popupCreateStakeholder}>
+    <button class="btn bg-primary-700 self-center" use:popup={popupCreateStakeholder}>
       Create a new stakeholder
     </button>
   {:else}
-    <button class="btn self-center bg-primary-700" use:popup={popupCreateStakeholder}>
+    <button class="btn bg-primary-700 self-center" use:popup={popupCreateStakeholder}>
       Create stakeholder
     </button>
     <table class="table">

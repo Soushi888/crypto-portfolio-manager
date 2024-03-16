@@ -1,9 +1,8 @@
-import stakeholderModel from '@models/stakeholder.model';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({}) => {
   return {
-    stakeholders: stakeholderModel.getAllStakeholders()
+    stakeholders: []
   };
 };
 
@@ -12,11 +11,11 @@ export const actions: Actions = {
     const formData = await request.formData();
     const name = formData.get('name') as string;
 
-    const result = stakeholderModel.createStakeholder(name);
+    // const result = stakeholderModel.createStakeholder(name);
 
     return {
-      status: 200,
-      result
+      status: 200
+      // result
     };
   },
   renameStakeholder: async ({ request }) => {
@@ -24,22 +23,22 @@ export const actions: Actions = {
     const id = formData.get('id') as string;
     const name = formData.get('name') as string;
 
-    const result = stakeholderModel.renameStakeholder(id, name);
+    // const result = stakeholderModel.renameStakeholder(id, name);
 
     return {
-      status: 200,
-      result
+      status: 200
+      // result
     };
   },
   deleteStakeholder: async ({ request }) => {
     const formData = await request.formData();
     const id = formData.get('id') as string;
 
-    const result = stakeholderModel.deleteStakeholder(id);
+    // const result = stakeholderModel.deleteStakeholder(id);
 
     return {
-      status: 200,
-      result
+      status: 200
+      // result
     };
   }
 };

@@ -1,7 +1,6 @@
 import { onDestroy } from 'svelte';
-import { get, writable, type Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
-// Custom store that wraps around the writable store
 export function createBreadcrumbStore() {
   const { subscribe, set, update } = writable<[Label: string, Link: string][]>([]);
   return {

@@ -12,8 +12,6 @@
   import { breadcrumbStore } from '@stores/breadcrumb.store';
   import DeleteCoinPopup from '@lib/popups/DeleteCoinPopup.svelte';
   import { onMount } from 'svelte';
-  import CoinGeckoApiService from '@services/api-services/AlternativeApiService';
-  import { get } from 'svelte/store';
 
   export let data: PageData;
 

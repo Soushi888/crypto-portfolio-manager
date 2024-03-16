@@ -48,13 +48,15 @@ export default class ApiService {
     const cachedData = localStorage.getItem(cacheKey);
 
     if (cachedData) {
+      console.group('Cached Data');
       const { data, timestamp } = JSON.parse(cachedData);
       console.log(`Cached data found for ${url}`);
 
       if (now - timestamp < timeLimit || isExpeption) {
-        console.log(`Using cached data for ${url}`);
+        console.log(`Using cached data for "${cacheKey}"`);
         console.log(`Seconds before expiration: ${(timeLimit - (now - timestamp)) / 1000}`);
 
+        console.groupEnd();
         return data;
       }
     }
@@ -66,6 +68,7 @@ export default class ApiService {
     this.lastFetchTime = now;
     const response = await this.fetch(url);
     console.log(`Fetched data from ${url}`);
+    console.groupEnd();
 
     if (!response.ok) {
       throw new Error('Failed to fetch data');
