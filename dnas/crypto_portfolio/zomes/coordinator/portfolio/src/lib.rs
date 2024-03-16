@@ -1,4 +1,4 @@
-pub mod stakeholder;
+pub mod stakeholder_profile;
 use hdk::prelude::*;
 use portfolio_integrity::*;
 #[hdk_extern]
@@ -8,19 +8,28 @@ pub fn init(_: ()) -> ExternResult<InitCallbackResult> {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "type")]
 pub enum Signal {
-    LinkCreated { action: SignedActionHashed, link_type: LinkTypes },
+    LinkCreated {
+        action: SignedActionHashed,
+        link_type: LinkTypes,
+    },
     LinkDeleted {
         action: SignedActionHashed,
         create_link_action: SignedActionHashed,
         link_type: LinkTypes,
     },
-    EntryCreated { action: SignedActionHashed, app_entry: EntryTypes },
+    EntryCreated {
+        action: SignedActionHashed,
+        app_entry: EntryTypes,
+    },
     EntryUpdated {
         action: SignedActionHashed,
         app_entry: EntryTypes,
         original_app_entry: EntryTypes,
     },
-    EntryDeleted { action: SignedActionHashed, original_app_entry: EntryTypes },
+    EntryDeleted {
+        action: SignedActionHashed,
+        original_app_entry: EntryTypes,
+    },
 }
 #[hdk_extern(infallible)]
 pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
@@ -33,34 +42,24 @@ pub fn post_commit(committed_actions: Vec<SignedActionHashed>) {
 fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
     match action.hashed.content.clone() {
         Action::CreateLink(create_link) => {
-            if let Ok(Some(link_type)) = LinkTypes::from_type(
-                create_link.zome_index,
-                create_link.link_type,
-            ) {
-                emit_signal(Signal::LinkCreated {
-                    action,
-                    link_type,
-                })?;
+            if let Ok(Some(link_type)) =
+                LinkTypes::from_type(create_link.zome_index, create_link.link_type)
+            {
+                emit_signal(Signal::LinkCreated { action, link_type })?;
             }
             Ok(())
         }
         Action::DeleteLink(delete_link) => {
-            let record = get(
-                    delete_link.link_add_address.clone(),
-                    GetOptions::default(),
-                )?
-                .ok_or(
-                    wasm_error!(
-                        WasmErrorInner::Guest("Failed to fetch CreateLink action"
-                        .to_string())
-                    ),
-                )?;
+            let record = get(delete_link.link_add_address.clone(), GetOptions::default())?.ok_or(
+                wasm_error!(WasmErrorInner::Guest(
+                    "Failed to fetch CreateLink action".to_string()
+                )),
+            )?;
             match record.action() {
                 Action::CreateLink(create_link) => {
-                    if let Ok(Some(link_type)) = LinkTypes::from_type(
-                        create_link.zome_index,
-                        create_link.link_type,
-                    ) {
+                    if let Ok(Some(link_type)) =
+                        LinkTypes::from_type(create_link.zome_index, create_link.link_type)
+                    {
                         emit_signal(Signal::LinkDeleted {
                             action,
                             link_type,
@@ -70,28 +69,23 @@ fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
                     Ok(())
                 }
                 _ => {
-                    return Err(
-                        wasm_error!(
-                            WasmErrorInner::Guest("Create Link should exist".to_string())
-                        ),
-                    );
+                    return Err(wasm_error!(WasmErrorInner::Guest(
+                        "Create Link should exist".to_string()
+                    )));
                 }
             }
         }
         Action::Create(_create) => {
             if let Ok(Some(app_entry)) = get_entry_for_action(&action.hashed.hash) {
-                emit_signal(Signal::EntryCreated {
-                    action,
-                    app_entry,
-                })?;
+                emit_signal(Signal::EntryCreated { action, app_entry })?;
             }
             Ok(())
         }
         Action::Update(update) => {
             if let Ok(Some(app_entry)) = get_entry_for_action(&action.hashed.hash) {
-                if let Ok(Some(original_app_entry)) = get_entry_for_action(
-                    &update.original_action_address,
-                ) {
+                if let Ok(Some(original_app_entry)) =
+                    get_entry_for_action(&update.original_action_address)
+                {
                     emit_signal(Signal::EntryUpdated {
                         action,
                         app_entry,
@@ -102,9 +96,7 @@ fn signal_action(action: SignedActionHashed) -> ExternResult<()> {
             Ok(())
         }
         Action::Delete(delete) => {
-            if let Ok(Some(original_app_entry)) = get_entry_for_action(
-                &delete.deletes_address,
-            ) {
+            if let Ok(Some(original_app_entry)) = get_entry_for_action(&delete.deletes_address) {
                 emit_signal(Signal::EntryDeleted {
                     action,
                     original_app_entry,
@@ -129,18 +121,22 @@ fn get_entry_for_action(action_hash: &ActionHash) -> ExternResult<Option<EntryTy
         }
     };
     let (zome_index, entry_index) = match record.action().entry_type() {
-        Some(EntryType::App(AppEntryDef { zome_index, entry_index, .. })) => {
-            (zome_index, entry_index)
-        }
+        Some(EntryType::App(AppEntryDef {
+            zome_index,
+            entry_index,
+            ..
+        })) => (zome_index, entry_index),
         _ => {
             return Ok(None);
         }
     };
-    Ok(
-        EntryTypes::deserialize_from_type(
-            zome_index.clone(),
-            entry_index.clone(),
-            entry,
-        )?,
-    )
+    Ok(EntryTypes::deserialize_from_type(
+        zome_index.clone(),
+        entry_index.clone(),
+        entry,
+    )?)
+}
+
+fn error(message: &str) -> WasmError {
+    wasm_error!(WasmErrorInner::Guest(message.to_string()))
 }

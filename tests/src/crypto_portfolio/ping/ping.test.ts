@@ -1,5 +1,4 @@
 import { expect, test } from "vitest";
-
 import { runScenario } from "@holochain/tryorama";
 
 const hAppPath = process.cwd() + "/../workdir/crypto-portfolio-manager.happ";
